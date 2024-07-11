@@ -1,11 +1,13 @@
-# Use the official OpenJDK base image
-FROM openjdk:11-jre-slim
+# Stage 1: Build the native executable
+FROM quay.io/quarkus/ubi-quarkus-native-image:22.3-java17 AS build
+WORKDIR /work/
+COPY . /work/
+RUN ./mvnw package -Pnative
 
-# Set the working directory inside the container
-WORKDIR /work
+# Stage 2: Create the minimal Docker image
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
+WORKDIR /work/
+COPY --from=build /work/target/*-runner /work/application
 
-# Copy the Quarkus build output (target/quarkus-app) to the container
-COPY target/quarkus-app /work/
-
-# Set the entry point to execute the application
-ENTRYPOINT ["java", "-jar", "/work/quarkus-run.jar"]
+# Set the entry point to execute the native binary
+ENTRYPOINT ["./application"]
