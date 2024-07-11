@@ -3,7 +3,7 @@ ENV TZ=America/Lima
 EXPOSE 8080
 RUN mkdir -p /formatos
 COPY formatos/* /formatos/
-# Ensure the Quarkus build directory exists and is correctly referenced
-COPY target/code-with-quarkus-1.0.0.jar /deployments/quarkus-app
+# Ajustar la ruta del archivo JAR según lo generado por Maven
+COPY target/quarkus-app/quarkus-run.jar /deployments/quarkus-app/quarkus-run.jar
 WORKDIR /deployments
-CMD ["java", "-jar", "quarkus-app/code-with-quarkus-1.0.0.jar"]
+CMD ["java", "-jar", "quarkus-app/quarkus-run.jar"]
