@@ -1,21 +1,9 @@
-# Use JRE for runtime
-FROM eclipse-temurin:11-jre-alpine
-
-# Set the timezone
+FROM eclipse-temurin:8-jdk-alpine
 ENV TZ=America/Lima
-
-# Expose the default Quarkus port
 EXPOSE 8080
-
-# Create a directory for your mounted volumes or additional configs
 RUN mkdir -p /formatos
 COPY formatos/* /formatos/
-
-# Copy your Quarkus application build output directory
+# Ensure the Quarkus build directory exists and is correctly referenced
 COPY target/quarkus-app /deployments/quarkus-app
-
-# Set the working directory to where we copied the app
 WORKDIR /deployments
-
-# Command to execute the Quarkus application
 CMD ["java", "-jar", "quarkus-app/quarkus-run.jar"]
