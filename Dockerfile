@@ -2,7 +2,8 @@ FROM eclipse-temurin:8-jdk-alpine
 ENV TZ=America/Lima
 EXPOSE 8080
 
-# Ajustar la ruta del archivo JAR según lo generado por Maven
-COPY target/*.jar  /deployments/code-with-quarkus-1.0.0.jar
+# Adjust the COPY command to include quarkus-run.jar and the lib directory
+COPY target/code-with-quarkus-1.0.0.jar /deployments/code-with-quarkus-1.0.0.jar
+COPY target/lib/ /deployments/lib/
 WORKDIR /deployments
-CMD ["java", "-jar", "/code-with-quarkus-1.0.0.jar"]
+CMD ["java", "-jar", "code-with-quarkus-1.0.0.jar"]
