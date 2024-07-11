@@ -1,9 +1,8 @@
 FROM eclipse-temurin:8-jdk-alpine
 ENV TZ=America/Lima
 EXPOSE 8080
-RUN mkdir -p /formatos
-COPY formatos/* /formatos/
+
 # Ajustar la ruta del archivo JAR según lo generado por Maven
-COPY target/quarkus-app/quarkus-run.jar /deployments/quarkus-app/quarkus-run.jar
+COPY target/quarkus-app/code-with-quarkus-1.0.0.jar  /deployments/quarkus-app/code-with-quarkus-1.0.0.jar
 WORKDIR /deployments
-CMD ["java", "-jar", "quarkus-app/quarkus-run.jar"]
+CMD ["java", "-jar", "quarkus-app/code-with-quarkus-1.0.0.jar"]
