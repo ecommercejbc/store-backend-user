@@ -1,0 +1,258 @@
+openapi: 3.0.3
+info:
+  title: API de Productos y Categorías
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /api/v1/product:
+    delete:
+      operationId: deleteProduct
+      parameters:
+      - description: ID of the product to delete
+        explode: true
+        in: query
+        name: id
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      tags:
+      - Product
+      x-accepts: application/json
+    get:
+      operationId: getProduct
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: OK
+      tags:
+      - Product
+      x-accepts: application/json
+    post:
+      operationId: postProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequestDTO'
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      tags:
+      - Product
+      x-content-type: application/json
+      x-accepts: application/json
+    put:
+      operationId: putProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequestDTO'
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      tags:
+      - Product
+      x-content-type: application/json
+      x-accepts: application/json
+  /categories:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CategoryRequestDTO'
+                type: array
+          description: Lista de categorías
+      summary: Obtener todas las categorías
+      tags:
+      - Category
+      x-accepts: application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequestDTO'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryRequestDTO'
+          description: Categoría creada
+      summary: Crear una nueva categoría
+      tags:
+      - Category
+      x-content-type: application/json
+      x-accepts: application/json
+  /categories/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Categoría eliminada
+        "404":
+          description: Categoría no encontrada
+      summary: Eliminar una categoría por ID
+      tags:
+      - Category
+      x-accepts: application/json
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryRequestDTO'
+          description: Categoría encontrada
+        "404":
+          description: Categoría no encontrada
+      summary: Obtener una categoría por ID
+      tags:
+      - Category
+      x-accepts: application/json
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequestDTO'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryRequestDTO'
+          description: Categoría actualizada
+        "404":
+          description: Categoría no encontrada
+      summary: Actualizar una categoría por ID
+      tags:
+      - Category
+      x-content-type: application/json
+      x-accepts: application/json
+  /api/v1/user/influencers/{userName}:
+    get:
+      parameters:
+      - description: Nombre de usuario del influenciador
+        explode: false
+        in: path
+        name: userName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfluencerResponseDTO'
+          description: Información del influenciador
+        "404":
+          description: Influenciador no encontrado
+      summary: Obtener información de un influenciador por nombre de usuario
+      tags:
+      - User
+      x-accepts: application/json
+components:
+  schemas:
+    ProductRequestDTO:
+      example:
+        short_description: short_description
+        name: name
+        description: description
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        short_description:
+          type: string
+        description:
+          maxLength: 20
+          pattern: "^[A-Za-z\\s]*$"
+          type: string
+      type: object
+    CategoryRequestDTO:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          description: ID de la categoría
+          type: string
+        name:
+          description: Nombre de la categorí
+          type: string
+      type: object
+    InfluencerResponseDTO:
+      example:
+        id: id
+        userName: userName
+        urlAvatar: urlAvatar
+      properties:
+        id:
+          description: ID del influenciador
+          type: string
+        userName:
+          description: Nombre de usuario del influenciador
+          type: string
+        urlAvatar:
+          description: URL del avatar del influenciador
+          type: string
+      type: object
+
